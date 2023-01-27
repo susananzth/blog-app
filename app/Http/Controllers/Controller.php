@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Http\Response;
 use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 
@@ -16,14 +17,14 @@ class Controller extends BaseController
      *
      * @return \Illuminate\Http\Response
      */
-    public function sendResponse($result, $message)
+    public function sendResponse($result, $message, $code = Response::HTTP_OK)
     {
         $response = [
             'success' => true,
             'data'    => $result,
             'message' => $message,
         ];
-        return response()->json($response, 200);
+        return response()->json($response, $code);
     }
 
     /**
@@ -31,7 +32,7 @@ class Controller extends BaseController
     *
     * @return \Illuminate\Http\Response
     */
-    public function sendError($error, $errorMessages = [], $code = 404)
+    public function sendError($error, $errorMessages = [], $code = Response::HTTP_NOT_FOUND)
     {
         $response = [
             'success' => false,
