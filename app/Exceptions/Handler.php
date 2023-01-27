@@ -2,11 +2,21 @@
 
 namespace App\Exceptions;
 
-use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
+use App\Traits\ApiResponser;
+use Illuminate\Http\Response;
+use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+
+use Illuminate\Validation\ValidationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+
 
 class Handler extends ExceptionHandler
 {
+    use ApiResponser;
     /**
      * A list of exception types with their corresponding custom log levels.
      *
@@ -50,5 +60,86 @@ class Handler extends ExceptionHandler
                 ], 404);
             }
         });
+    }
+
+    /**
+     * Render an exception into an HTTP response.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Throwable  $exception
+     * @return \Illuminate\Http\Response
+     */
+    public function render($request, Throwable $exception)
+    {
+        $response = $this->handleException($request, $exception);
+        return $response;
+    }
+
+    public function handleException($request, Throwable $exception)
+    {
+
+        if ($exception instanceof AuthorizationException) {
+            return $this->errorResponse(
+                $exception->getMessage(), 
+                Response::HTTP_UNAUTHORIZED
+            );
+        }
+        if ($exception instanceof ValidationException) {
+            return $this->errorResponse(
+                $exception->getMessage(), 
+                Response::HTTP_UNPROCESSABLE_ENTITY
+            );
+        }
+
+        if ($exception instanceof ModelNotFoundException) {
+            return $this->errorResponse(
+                'Entry for '.str_replace('App', '', $exception->getModel()).' not found',
+                Response::HTTP_NOT_FOUND);
+
+        }
+
+        if ($exception instanceof MethodNotAllowedHttpException) {
+            return $this->errorResponse(
+                'The specified method for the request is invalid',
+                Response::HTTP_METHOD_NOT_ALLOWED
+            );
+        }
+
+        if ($exception instanceof NotFoundHttpException) {
+            return $this->errorResponse(
+                'The specified URL cannot be found', 
+                Response::HTTP_NOT_FOUND
+            );
+        }
+
+        if ($exception instanceof RouteNotFoundException) {
+            return $this->errorResponse(
+                'The specified URL cannot be  found.', 
+                Response::HTTP_NOT_FOUND
+            );
+        }
+
+        if ($exception instanceof RequestException) {
+            return $this->errorResponse(
+                'External API call failed.', 
+                Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+
+        if ($exception instanceof HttpException) {
+            return $this->errorResponse(
+                $exception->getMessage(), 
+                $exception->getStatusCode()
+            );
+        }
+
+        if (config('app.debug')) {
+            return parent::render($request, $exception);            
+        }
+
+        return $this->errorResponse(
+            'Unexpected Exception. Try later', 
+            Response::HTTP_INTERNAL_SERVER_ERROR
+        );
+
     }
 }
