@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use Illuminate\Http\Response;
 use App\Http\Requests\Post\StoreRequest;
 use App\Http\Requests\Post\UpdateRequest;
 
@@ -30,7 +31,7 @@ class PostController extends Controller
 
         $post = Post::create($inputs);
 
-        return $this->successResponse($post , 'Post register successfully.');
+        return $this->successResponse($post , 'Post register successfully.', Response::HTTP_CREATED);
 
     }
 
@@ -54,7 +55,7 @@ class PostController extends Controller
      */
     public function update(UpdateRequest $request, Post $post)
     {
-        $post = Post::findOrFail($id);
+        $post = Post::findOrFail($post);
 
         $inputs = $request->validated();
 
@@ -71,8 +72,8 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        Flight::destroy($post);
+        Post::destroy($post);
 
-        return $this->successResponse('', 'Post deleted successfully.');
+        return $this->successResponse('', 'Post deleted successfully.', Response::HTTP_NO_CONTENT);
     }
 }
