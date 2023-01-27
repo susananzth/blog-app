@@ -26,19 +26,15 @@ class AuthenticatedSessionController extends Controller
 
             $user = Auth::user(); 
 
-            $success['token'] = $user->createToken('MyApp')->plainTextToken; 
-            $success['name']  = $user->name;
+            $data['token'] = $user->createToken('MyApp')->plainTextToken; 
+            $data['name']  = $user->name;
 
-            return $this->sendResponse(
-                $success, 
-                'User login successfully.', 
-                Response::HTTP_OK);
+            return $this->successResponse($data,'User login successfully.');
 
         } else { 
 
-            return $this->sendError(
+            return $this->errorResponse(
                 'These credentials do not match our records.', 
-                ['error'=>'These credentials do not match our records.'], 
                 Response::HTTP_UNPROCESSABLE_ENTITY);
 
         } 
@@ -56,6 +52,6 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        return $this->sendResponse('', 'User logout.');
+        return $this->successResponse('', 'User logout.');
     }
 }

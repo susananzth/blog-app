@@ -25,12 +25,9 @@ class AuthenticationTest extends TestCase
         $response->assertStatus(Response::HTTP_OK);
 
         $response->assertJsonStructure([
-            'success',
-            'data'    => [
-                'token',
-                'name'
-            ],
+            'status',
             'message',
+            'data'
         ]);
 
         $this->assertAuthenticated();
@@ -46,12 +43,13 @@ class AuthenticationTest extends TestCase
         ];
 
         $response = $this->json('post', 'api/login', $input_data);
-
+        
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
 
         $response->assertJsonStructure([
-            "message",
-            "errors"
+            'status',
+            'message',
+            'data'
         ]);
 
         $this->assertGuest();
@@ -71,8 +69,9 @@ class AuthenticationTest extends TestCase
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
         
         $response->assertJsonStructure([
-            "message",
-            "errors"
+            'status',
+            'message',
+            'data'
         ]);
         
         $this->assertGuest();
