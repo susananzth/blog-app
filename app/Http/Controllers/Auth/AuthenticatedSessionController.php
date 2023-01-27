@@ -26,7 +26,7 @@ class AuthenticatedSessionController extends Controller
 
             $user = Auth::user(); 
 
-            $data['token'] = $user->createToken('MyApp')->plainTextToken; 
+            $data['token'] = $user->createToken('BlogApp')->plainTextToken; 
             $data['name']  = $user->name;
 
             return $this->successResponse($data,'User login successfully.');
