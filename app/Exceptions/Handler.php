@@ -77,7 +77,6 @@ class Handler extends ExceptionHandler
 
     public function handleException($request, Throwable $exception)
     {
-
         if ($exception instanceof AuthorizationException) {
             return $this->errorResponse(
                 $exception->getMessage(), 

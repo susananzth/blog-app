@@ -55,7 +55,7 @@ class PostController extends Controller
      */
     public function update(UpdateRequest $request, Post $post)
     {
-        $post = Post::findOrFail($post);
+        $post = Post::find($post)->first();
 
         $inputs = $request->validated();
 
