@@ -35,7 +35,7 @@ class PostTest extends TestCase
         ]);
     }
 
-    public function test_can_create_post(): void
+    public function test_can_create_post() : void
     {
         Sanctum::actingAs(
             User::factory()->create(),
@@ -58,7 +58,8 @@ class PostTest extends TestCase
         ]);
     }
 
-    public function test_can_update_post() {
+    public function test_can_update_post(): void
+    {
 
         Sanctum::actingAs(
             User::factory()->create(),
@@ -81,7 +82,8 @@ class PostTest extends TestCase
         ]);
     }
 
-    public function test_can_show_post() {
+    public function test_can_show_post(): void
+    {
 
         Sanctum::actingAs(
             User::factory()->create(),
@@ -101,7 +103,8 @@ class PostTest extends TestCase
         ]);
     }
 
-    public function test_can_delete_post() {
+    public function test_can_delete_post(): void
+    {
 
         Sanctum::actingAs(
             User::factory()->create(), 
@@ -112,7 +115,7 @@ class PostTest extends TestCase
 
         $response = $this->delete(route('post.destroy', $post->id));
 
-        $response->assertStatus(Response::HTTP_NO_CONTENT);
+        $response->assertStatus(Response::HTTP_OK);
 
         $response->assertJsonStructure([
             'status',
@@ -120,5 +123,4 @@ class PostTest extends TestCase
             'data'
         ]);
     }
-
 }

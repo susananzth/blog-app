@@ -72,8 +72,8 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        Post::destroy($post);
+        Post::destroy($post->id);
 
-        return $this->successResponse('', 'Post deleted successfully.', Response::HTTP_NO_CONTENT);
+        return $this->successResponse('', 'Post deleted successfully.', Response::HTTP_OK);
     }
 }
