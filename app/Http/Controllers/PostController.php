@@ -22,7 +22,7 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StorePostRequest  $request
+     * @param  \App\Http\Requests\Post\StoreRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreRequest $request)
@@ -31,8 +31,11 @@ class PostController extends Controller
 
         $post = Post::create($inputs);
 
-        return $this->successResponse($post , 'Post register successfully.', Response::HTTP_CREATED);
-
+        return $this->successResponse(
+            $post, 
+            'Post register successfully.', 
+            Response::HTTP_CREATED
+        );
     }
 
     /**
@@ -49,7 +52,7 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdatePostRequest  $request
+     * @param  \App\Http\Requests\Post\UpdateRequest  $request
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
@@ -61,7 +64,7 @@ class PostController extends Controller
 
         $post->update($inputs);
 
-        return $this->successResponse($post , 'Post updated successfully.');
+        return $this->successResponse($post, 'Post updated successfully.');
     }
 
     /**
