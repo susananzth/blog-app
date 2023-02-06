@@ -82,6 +82,27 @@ class PostTest extends TestCase
             'data'
         ]);
     }
+    
+    public function test_can_edit_post(): void
+    {
+        Sanctum::actingAs(
+            User::factory()->create(),
+            ['BlogApp']
+        );
+
+        $post = Post::factory()->create();
+        $category = Category::factory(2)->create();
+
+        $response = $this->get(route('post.edit', $post->id));
+
+        $response->assertStatus(Response::HTTP_OK);
+
+        $response->assertJsonStructure([
+            'status',
+            'message',
+            'data'
+        ]);
+    }
 
     public function test_can_update_post(): void
     {
@@ -92,10 +113,14 @@ class PostTest extends TestCase
         );
 
         $post = Post::factory()->create();
+        $category = Category::factory()->create();
 
         $response = $this->put(route('post.update', $post->id), [
             'title' => $post->title,
             'body' => $post->body,
+            'category' => [
+                $category->id
+            ]
         ]);
 
         $response->assertStatus(Response::HTTP_OK);

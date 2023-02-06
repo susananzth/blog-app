@@ -43,9 +43,9 @@ class PostController extends Controller
         $post = Post::create($inputs);
 
         $post->categories()->attach($inputs['category']);
-        
+
         return $this->successResponse(
-            $post, 
+            $post->load('categories'), 
             'Post register successfully.', 
             Response::HTTP_CREATED
         );
@@ -65,12 +65,15 @@ class PostController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Post $post)
     {
-        //
+        $data['post']       = Post::where('id', $post->id)->with('categories')->get();
+        $data['categories'] = Category::all();
+
+        return $this->successResponse($data);
     }
 
     /**
@@ -88,7 +91,12 @@ class PostController extends Controller
 
         $post->update($inputs);
 
-        return $this->successResponse($post, 'Post updated successfully.');
+        $post->categories()->detach();
+        $post->categories()->attach($inputs['category']);
+
+        return $this->successResponse(
+            $post->load('categories'), 'Post updated successfully.'
+        );
     }
 
     /**

@@ -26,6 +26,8 @@ class UpdateRequest extends FormRequest
         return [
             'title' => ['bail', 'required', 'string', 'max:200'],
             'body' => ['bail', 'required', 'string'],
+            'category'   => ['bail', 'nullable', 'array'],
+            'category.*' => ['bail', 'sometimes', 'exists:categories,id'],
         ];
     }
 }
