@@ -24,8 +24,10 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => ['bail', 'required', 'string', 'max:200'],
-            'body' => ['bail', 'required', 'string'],
+            'title'      => ['bail', 'required', 'string', 'max:200'],
+            'body'       => ['bail', 'required', 'string'],
+            'category'   => ['bail', 'nullable', 'array'],
+            'category.*' => ['bail', 'sometimes', 'exists:categories,id'],
         ];
     }
 }

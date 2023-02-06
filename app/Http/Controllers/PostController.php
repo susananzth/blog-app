@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\Category;
 use Illuminate\Http\Response;
 use App\Http\Requests\Post\StoreRequest;
 use App\Http\Requests\Post\UpdateRequest;
@@ -16,7 +17,17 @@ class PostController extends Controller
      */
     public function index()
     {
-        return $this->successResponse(Post::all());
+        return $this->successResponse(Post::with('categories')->get());
+    }
+
+     /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        return $this->successResponse(Category::all());
     }
 
     /**
@@ -31,6 +42,8 @@ class PostController extends Controller
 
         $post = Post::create($inputs);
 
+        $post->categories()->attach($inputs['category']);
+        
         return $this->successResponse(
             $post, 
             'Post register successfully.', 
@@ -47,6 +60,17 @@ class PostController extends Controller
     public function show(Post $post)
     {
         return $this->successResponse($post);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
     }
 
     /**

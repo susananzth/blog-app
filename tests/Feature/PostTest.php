@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use App\Models\Post;
 use App\Models\User;
+use App\Models\Category;
 use Laravel\Sanctum\Sanctum;
 use Illuminate\Http\Response;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -35,7 +36,27 @@ class PostTest extends TestCase
         ]);
     }
 
-    public function test_can_create_post() : void
+    public function test_can_create_post(): void
+    {
+        Sanctum::actingAs(
+            User::factory()->create(),
+            ['BlogApp']
+        );
+
+        $category = Category::factory(2)->create();
+
+        $response = $this->get('/api/post/create');
+
+        $response->assertStatus(Response::HTTP_OK);
+
+        $response->assertJsonStructure([
+            'status',
+            'message',
+            'data'
+        ]);
+    }
+
+    public function test_can_store_post() : void
     {
         Sanctum::actingAs(
             User::factory()->create(),
@@ -43,10 +64,14 @@ class PostTest extends TestCase
         );
 
         $post = Post::factory()->create();
+        $category = Category::factory()->create();
 
         $response = $this->post('/api/post', [
             'title' => $post->title,
             'body' => $post->body,
+            'category' => [
+                $category->id
+            ]
         ]);
 
         $response->assertStatus(Response::HTTP_CREATED);

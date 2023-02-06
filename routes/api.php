@@ -49,9 +49,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
                     ->name('logout');
-    Route::resource('post', PostController::class)->except([
-        'create', 'edit'
-    ]);
+    Route::resource('post', PostController::class);
     Route::resource('category', CategoryController::class)->except([
         'create', 'edit'
     ]);
