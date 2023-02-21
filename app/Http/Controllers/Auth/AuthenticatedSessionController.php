@@ -26,7 +26,7 @@ class AuthenticatedSessionController extends Controller
 
             $user = Auth::user(); 
 
-            $data['token'] = $user->createToken('BlogApp')->plainTextToken; 
+            $data['token'] = $user->createToken('BlogApp')->accessToken; 
             $data['name']  = $user->name;
 
             return $this->successResponse($data,'User login successfully.');
@@ -46,11 +46,9 @@ class AuthenticatedSessionController extends Controller
     public function destroy(Request $request)
     {
         Auth::guard('web')->logout();
-        auth('sanctum')->user()->tokens()->delete();
-
         $request->session()->invalidate();
-
-        $request->session()->regenerateToken();
+        $user = Auth::user()->token();
+        $user->revoke();
 
         return $this->successResponse('', 'User logout.');
     }

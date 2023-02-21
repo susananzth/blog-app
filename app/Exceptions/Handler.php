@@ -7,6 +7,7 @@ use App\Traits\ApiResponser;
 use Illuminate\Http\Response;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -77,6 +78,12 @@ class Handler extends ExceptionHandler
 
     public function handleException($request, Throwable $exception)
     {
+        if ($exception instanceof AuthenticationException) {
+            return $this->errorResponse(
+                $exception->getMessage(), 
+                Response::HTTP_UNAUTHORIZED
+            );
+        }
         if ($exception instanceof AuthorizationException) {
             return $this->errorResponse(
                 $exception->getMessage(), 

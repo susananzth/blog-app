@@ -34,7 +34,7 @@ Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])
 Route::post('/reset-password', [NewPasswordController::class, 'store'])
                 ->name('password.store');
 
-Route::middleware(['auth:sanctum'])->group(function () {
+Route::middleware(['auth:api'])->group(function () {
     Route::get('/user', function (Request $request) {
         return $request->user();
     });

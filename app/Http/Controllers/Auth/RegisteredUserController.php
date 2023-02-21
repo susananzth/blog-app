@@ -27,7 +27,7 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
 
-        $data['token'] = $user->createToken('BlogApp')->plainTextToken;
+        $data['token'] = $user->createToken('BlogApp')->accessToken;
         $data['name']  = $user->name;
 
         Auth::login($user);
