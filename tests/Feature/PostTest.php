@@ -7,6 +7,7 @@ use App\Models\Post;
 use App\Models\User;
 use App\Models\Category;
 use Illuminate\Http\Response;
+use Laravel\Passport\Passport;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 
@@ -17,7 +18,7 @@ class PostTest extends TestCase
 
     public function test_can_list_posts(): void
     {
-        Sanctum::actingAs(
+        Passport::actingAs(
             User::factory()->create(),
             ['BlogApp']
         );
@@ -37,7 +38,7 @@ class PostTest extends TestCase
 
     public function test_can_create_post(): void
     {
-        Sanctum::actingAs(
+        Passport::actingAs(
             User::factory()->create(),
             ['BlogApp']
         );
@@ -57,7 +58,7 @@ class PostTest extends TestCase
 
     public function test_can_store_post() : void
     {
-        Sanctum::actingAs(
+        Passport::actingAs(
             User::factory()->create(),
             ['BlogApp']
         );
@@ -84,7 +85,7 @@ class PostTest extends TestCase
     
     public function test_can_edit_post(): void
     {
-        Sanctum::actingAs(
+        Passport::actingAs(
             User::factory()->create(),
             ['BlogApp']
         );
@@ -106,7 +107,7 @@ class PostTest extends TestCase
     public function test_can_update_post(): void
     {
 
-        Sanctum::actingAs(
+        Passport::actingAs(
             User::factory()->create(),
             ['BlogApp']
         );
@@ -134,7 +135,7 @@ class PostTest extends TestCase
     public function test_can_show_post(): void
     {
 
-        Sanctum::actingAs(
+        Passport::actingAs(
             User::factory()->create(),
             ['BlogApp']
         );
@@ -155,7 +156,7 @@ class PostTest extends TestCase
     public function test_can_delete_post(): void
     {
 
-        Sanctum::actingAs(
+        Passport::actingAs(
             User::factory()->create(), 
             ['BlogApp']
         );

@@ -6,6 +6,8 @@ use Tests\TestCase;
 use App\Models\User;
 use App\Models\Category;
 use Illuminate\Http\Response;
+use Laravel\Passport\Passport;
+use Laravel\Passport\Client;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 
@@ -15,7 +17,7 @@ class CategoryTest extends TestCase
 
     public function test_can_list_categories(): void
     {
-        Sanctum::actingAs(
+        Passport::actingAs(
             User::factory()->create(),
             ['BlogApp']
         );
@@ -35,7 +37,7 @@ class CategoryTest extends TestCase
 
     public function test_can_create_category() : void
     {
-        Sanctum::actingAs(
+        Passport::actingAs(
             User::factory()->create(),
             ['BlogApp']
         );
@@ -58,7 +60,7 @@ class CategoryTest extends TestCase
     public function test_can_update_category(): void
     {
 
-        Sanctum::actingAs(
+        Passport::actingAs(
             User::factory()->create(),
             ['BlogApp']
         );
@@ -81,7 +83,7 @@ class CategoryTest extends TestCase
     public function test_can_show_category(): void
     {
 
-        Sanctum::actingAs(
+        Passport::actingAs(
             User::factory()->create(),
             ['BlogApp']
         );
@@ -102,7 +104,7 @@ class CategoryTest extends TestCase
     public function test_can_delete_category(): void
     {
 
-        Sanctum::actingAs(
+        Passport::actingAs(
             User::factory()->create(), 
             ['BlogApp']
         );

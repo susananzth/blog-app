@@ -5,6 +5,8 @@ namespace Tests\Feature\Auth;
 use Tests\TestCase;
 use App\Models\User;
 use Illuminate\Http\Response;
+use Laravel\Passport\Passport;
+use Laravel\Passport\Client;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class AuthenticationTest extends TestCase
@@ -13,6 +15,10 @@ class AuthenticationTest extends TestCase
 
     public function test_users_can_authenticate_using_email_and_password(): void
     {
+        Passport::actingAsClient(
+            Client::factory()->create(),
+            ['BlogApp']
+        );
         $user = User::factory()->create();
 
         $input_data = [
@@ -35,6 +41,10 @@ class AuthenticationTest extends TestCase
 
     public function test_users_can_not_authenticate_with_invalid_email(): void
     {
+        Passport::actingAsClient(
+            Client::factory()->create(),
+            ['BlogApp']
+        );
         $user = User::factory()->create();
 
         $input_data = [
@@ -57,6 +67,10 @@ class AuthenticationTest extends TestCase
 
     public function test_users_can_not_authenticate_with_invalid_password(): void
     {
+        Passport::actingAsClient(
+            Client::factory()->create(),
+            ['BlogApp']
+        );
         $user = User::factory()->create();
 
         $input_data = [

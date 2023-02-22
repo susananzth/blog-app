@@ -30,7 +30,7 @@ trait ApiResponser {
      *
      * @return \Illuminate\Http\Response
      */
-    protected function errorResponse($message = null, $code)
+    protected function errorResponse($message = null, $code = Response::HTTP_INTERNAL_SERVER_ERROR)
     {
         return response()->json([
             'status'  => 'Error',
