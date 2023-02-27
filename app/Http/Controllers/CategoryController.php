@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\Category\StoreRequest;
 use App\Http\Requests\Category\UpdateRequest;
 
@@ -16,7 +17,13 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return $this->successResponse(Category::all());
+        if (Gate::denies('category_index')) {
+            return $this->errorResponse(
+                '403 Forbidden', 
+                Response::HTTP_FORBIDDEN);
+        }
+        $categories = Category::all();
+        return $this->successResponse($categories);
     }
 
     /**
@@ -27,6 +34,11 @@ class CategoryController extends Controller
      */
     public function store(StoreRequest $request)
     {
+        if (Gate::denies('category_add')) {
+            return $this->errorResponse(
+                '403 Forbidden', 
+                Response::HTTP_FORBIDDEN);
+        }
         $inputs = $request->validated();
 
         $category = Category::create($inputs);
@@ -46,6 +58,27 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
+        if (Gate::denies('category_index')) {
+            return $this->errorResponse(
+                '403 Forbidden', 
+                Response::HTTP_FORBIDDEN);
+        }
+        return $this->successResponse($category);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Models\Category  $category
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Category $category)
+    {
+        if (Gate::denies('category_edit')) {
+            return $this->errorResponse(
+                '403 Forbidden', 
+                Response::HTTP_FORBIDDEN);
+        }
         return $this->successResponse($category);
     }
 
@@ -58,6 +91,11 @@ class CategoryController extends Controller
      */
     public function update(UpdateRequest $request, Category $category)
     {
+        if (Gate::denies('category_edit')) {
+            return $this->errorResponse(
+                '403 Forbidden', 
+                Response::HTTP_FORBIDDEN);
+        }
         $category = Category::find($category)->first();
 
         $inputs = $request->validated();
@@ -75,6 +113,11 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
+        if (Gate::denies('category_delete')) {
+            return $this->errorResponse(
+                '403 Forbidden', 
+                Response::HTTP_FORBIDDEN);
+        }
         Category::destroy($category->id);
 
         return $this->successResponse('', 'Category deleted successfully.', Response::HTTP_OK);

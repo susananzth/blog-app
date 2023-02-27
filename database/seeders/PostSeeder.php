@@ -14,6 +14,9 @@ class PostSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\Post::factory(10)->create();
+        \App\Models\Post::factory(10)->create()->each(function ($post) {
+            $post->categories()->save(\App\Models\Category::inRandomOrder()->first());
+            $post->save();
+        });
     }
 }

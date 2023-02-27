@@ -9,6 +9,11 @@ class Category extends Model
 {
     use HasFactory;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = ['name'];
 
     /**
@@ -16,6 +21,6 @@ class Category extends Model
      */
     public function posts()
     {
-        return $this->morphedByMany(Post::class, 'categorable');
+        return $this->morphedByMany(Post::class, 'categorable')->withTimestamps();
     }
 }

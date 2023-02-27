@@ -53,6 +53,6 @@ Route::middleware(['auth:api'])->group(function () {
     Route::resource('post', PostController::class);
     Route::resource('role', RoleController::class);
     Route::resource('category', CategoryController::class)->except([
-        'create', 'edit'
+        'create'
     ]);
 });
