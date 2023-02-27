@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Post;
 
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateRequest extends FormRequest
@@ -13,7 +14,7 @@ class UpdateRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return Gate::allows('post_edit');
     }
 
     /**
@@ -24,8 +25,9 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => ['bail', 'required', 'string', 'max:200'],
-            'body' => ['bail', 'required', 'string'],
+            'title'      => ['bail', 'required', 'string', 'max:200', 'unique:posts,title,' . $this->post['id']],
+            'body'       => ['bail', 'required', 'string'],
+            'status'     => ['bail', 'required', 'boolean'],
             'category'   => ['bail', 'nullable', 'array'],
             'category.*' => ['bail', 'sometimes', 'exists:categories,id'],
         ];

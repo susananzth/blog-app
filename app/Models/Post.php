@@ -9,13 +9,18 @@ class Post extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'body'];
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = ['title', 'body', 'status'];
 
     /**
      * Get all of the categories for the post.
      */
     public function categories()
     {
-        return $this->morphToMany(Category::class, 'categorable');
+        return $this->morphToMany(Category::class, 'categorable')->withTimestamps();
     }
 }
