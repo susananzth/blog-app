@@ -17,7 +17,7 @@ class RoleFactory extends Factory
     public function definition()
     {
         return [
-            'title' => fake()->sentence(),
+            'title' => fake()->realTextBetween($minNbChars = 10, $maxNbChars = 25, $indexSize = 1),
         ];
     }
 }

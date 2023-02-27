@@ -56,14 +56,14 @@ class RoleController extends Controller
                 '403 Forbidden', 
                 Response::HTTP_FORBIDDEN);
         }
-        $validated = $request->validated();
-        $role = new Role;
-        $role->title = $validated['title'];
-        $role->save();
-        if (isset($validated['permission'])) {
-            $role->permissions()->sync($validated['permission']);
-        }
-        return $this->successResponse('', 'Rol registrado con éxito.');
+        $inputs = $request->validated();
+
+        $role = Role::create($inputs);
+
+        $role->permissions()->attach($inputs['permission']);
+
+        return $this->successResponse(
+            $role->load('permissions'), 'Rol registrado con éxito.');
     }
 
     /**
@@ -79,9 +79,7 @@ class RoleController extends Controller
                 '403 Forbidden', 
                 Response::HTTP_FORBIDDEN);
         }
-        $data['role'] = $role;
-        $data['permissions'] = $role->permissions;
-        return $this->successResponse($data);
+        return $this->successResponse($role->load('permissions'));
     }
 
     /**
@@ -124,7 +122,8 @@ class RoleController extends Controller
         $validated = $request->validated();
         $role->update($validated);
         $role->permissions()->sync($validated['permission']);
-        return $this->successResponse('', 'Rol actualizado con éxito.');
+        return $this->successResponse(
+            $role->load('permissions'), 'Rol actualizado con éxito.');
     }
 
     /**

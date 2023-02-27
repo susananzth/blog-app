@@ -20,6 +20,8 @@ return new class extends Migration
             ->onDelete('cascade');
             $table->foreignIdFor(Role::class)->constrained()->onUpdate('cascade')
             ->onDelete('cascade');
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 

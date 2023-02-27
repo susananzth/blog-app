@@ -19,7 +19,7 @@ class PermissionRoleSeeder extends Seeder
         $admin_permissions = Permission::all();
         Role::findOrFail(2)->permissions()->sync($admin_permissions->pluck('id'));
 
-        $user_permissions = Permission::all();
-        Role::findOrFail(1)->permissions()->sync($user_permissions);
+        $user_permissions = Permission::where('permission', '<>', 'Delete')->get();
+        Role::findOrFail(3)->permissions()->sync($user_permissions->pluck('id'));
     }
 }

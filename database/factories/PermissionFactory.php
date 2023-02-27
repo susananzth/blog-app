@@ -17,9 +17,9 @@ class PermissionFactory extends Factory
     public function definition()
     {
         return [
-            'title' => fake()->sentence(),
-            'menu' => fake()->sentence(),
-            'permission' => fake()->sentence(),
+            'title' => fake()->realTextBetween($minNbChars = 10, $maxNbChars = 25, $indexSize = 1),
+            'menu' => fake()->realTextBetween($minNbChars = 10, $maxNbChars = 25, $indexSize = 1),
+            'permission' => fake()->realTextBetween($minNbChars = 20, $maxNbChars = 50, $indexSize = 1),
         ];
     }
 }

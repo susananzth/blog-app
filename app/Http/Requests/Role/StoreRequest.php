@@ -25,9 +25,9 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'title'         => 'required|string|unique:roles|max:255',
-            'permission'    => 'required|array',
-            'permission.*'  => 'sometimes|integer|exists:permissions,id',
+            'title'         => ['bail', 'required', 'string', 'max:100', 'unique:roles'],
+            'permission'    => ['bail', 'required', 'array'],
+            'permission.*'  => ['bail', 'sometimes', 'integer', 'exists:permissions,id'],
         ];
     }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Role;
 
-use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -26,9 +25,9 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'title'         => ['required', 'string', 'max:255', Rule::unique('roles')->ignore($this->role)],
-            'permission'    => 'required|array',
-            'permission.*'  => 'sometimes|integer|exists:permissions,id',
+            'title'         => ['bail', 'required', 'string', 'max:100', 'unique:roles,title,' . $this->role['id']],
+            'permission'    => ['bail', 'required', 'array'],
+            'permission.*'  => ['bail', 'sometimes', 'integer', 'exists:permissions,id'],
         ];
     }
 }
