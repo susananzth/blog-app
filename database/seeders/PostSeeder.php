@@ -16,6 +16,7 @@ class PostSeeder extends Seeder
     {
         \App\Models\Post::factory(10)->create()->each(function ($post) {
             $post->categories()->save(\App\Models\Category::inRandomOrder()->first());
+            $post->tags()->save(\App\Models\Tag::inRandomOrder()->first());
             $post->save();
         });
     }

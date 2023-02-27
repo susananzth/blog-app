@@ -23,4 +23,12 @@ class Post extends Model
     {
         return $this->morphToMany(Category::class, 'categorable')->withTimestamps();
     }
+
+    /**
+     * Get all of the tags for the post.
+     */
+    public function tags()
+    {
+        return $this->morphToMany(Tag::class, 'taggeable')->withTimestamps();
+    }
 }

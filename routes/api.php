@@ -10,6 +10,7 @@ use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -53,6 +54,9 @@ Route::middleware(['auth:api'])->group(function () {
     Route::resource('post', PostController::class);
     Route::resource('role', RoleController::class);
     Route::resource('category', CategoryController::class)->except([
+        'create'
+    ]);
+    Route::resource('tag', TagController::class)->except([
         'create'
     ]);
 });
