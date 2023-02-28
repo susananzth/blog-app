@@ -9,19 +9,16 @@ use App\Models\Category;
 use Illuminate\Http\Response;
 use Laravel\Passport\Passport;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 
 class PostTest extends TestCase
 {
-
     use RefreshDatabase;
 
     public function test_can_list_posts(): void
     {
-        Passport::actingAs(
-            User::factory()->create(),
-            ['BlogApp']
-        );
+        User::factory()->create();
+        $user->roles()->sync(2);
+        Passport::actingAs($user, ['BlogApp']);
 
         $post = Post::factory(5)->create();
 
@@ -38,10 +35,9 @@ class PostTest extends TestCase
 
     public function test_can_create_post(): void
     {
-        Passport::actingAs(
-            User::factory()->create(),
-            ['BlogApp']
-        );
+        User::factory()->create();
+        $user->roles()->sync(2);
+        Passport::actingAs($user, ['BlogApp']);
 
         $category = Category::factory(2)->create();
 
@@ -58,17 +54,16 @@ class PostTest extends TestCase
 
     public function test_can_store_post() : void
     {
-        Passport::actingAs(
-            User::factory()->create(),
-            ['BlogApp']
-        );
+        User::factory()->create();
+        $user->roles()->sync(2);
+        Passport::actingAs($user, ['BlogApp']);
 
-        $post = Post::factory()->create();
         $category = Category::factory()->create();
 
         $response = $this->post('/api/post', [
-            'title' => $post->title,
-            'body' => $post->body,
+            'title' => fake()->realTextBetween($minNbChars = 20, $maxNbChars = 120, $indexSize = 1),
+            'body' => fake()->paragraph(),
+            'status' => 1,
             'category' => [
                 $category->id
             ]
@@ -85,10 +80,9 @@ class PostTest extends TestCase
     
     public function test_can_edit_post(): void
     {
-        Passport::actingAs(
-            User::factory()->create(),
-            ['BlogApp']
-        );
+        $user = User::factory()->create();
+        $user->roles()->sync(2);
+        Passport::actingAs($user, ['BlogApp']);
 
         $post = Post::factory()->create();
         $category = Category::factory(2)->create();
@@ -106,18 +100,17 @@ class PostTest extends TestCase
 
     public function test_can_update_post(): void
     {
-
-        Passport::actingAs(
-            User::factory()->create(),
-            ['BlogApp']
-        );
+        $user = User::factory()->create();
+        $user->roles()->sync(2);
+        Passport::actingAs($user, ['BlogApp']);
 
         $post = Post::factory()->create();
         $category = Category::factory()->create();
 
         $response = $this->put(route('post.update', $post->id), [
-            'title' => $post->title,
-            'body' => $post->body,
+            'title' => fake()->realTextBetween($minNbChars = 20, $maxNbChars = 120, $indexSize = 2),
+            'body' => fake()->paragraph(),
+            'status' => 1,
             'category' => [
                 $category->id
             ]
@@ -134,11 +127,9 @@ class PostTest extends TestCase
 
     public function test_can_show_post(): void
     {
-
-        Passport::actingAs(
-            User::factory()->create(),
-            ['BlogApp']
-        );
+        $user = User::factory()->create();
+        $user->roles()->sync(2);
+        Passport::actingAs($user, ['BlogApp']);
 
         $post = Post::factory()->create();
 
@@ -155,11 +146,9 @@ class PostTest extends TestCase
 
     public function test_can_delete_post(): void
     {
-
-        Passport::actingAs(
-            User::factory()->create(), 
-            ['BlogApp']
-        );
+        $user = User::factory()->create();
+        $user->roles()->sync(2);
+        Passport::actingAs($user, ['BlogApp']);
 
         $post = Post::factory()->create();
 

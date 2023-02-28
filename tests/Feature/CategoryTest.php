@@ -7,9 +7,7 @@ use App\Models\User;
 use App\Models\Category;
 use Illuminate\Http\Response;
 use Laravel\Passport\Passport;
-use Laravel\Passport\Client;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 
 class CategoryTest extends TestCase
 {
@@ -17,10 +15,9 @@ class CategoryTest extends TestCase
 
     public function test_can_list_categories(): void
     {
-        Passport::actingAs(
-            User::factory()->create(),
-            ['BlogApp']
-        );
+        User::factory()->create();
+        $user->roles()->sync(2);
+        Passport::actingAs($user, ['BlogApp']);
 
         $category = Category::factory(5)->create();
 
@@ -35,17 +32,14 @@ class CategoryTest extends TestCase
         ]);
     }
 
-    public function test_can_create_category() : void
+    public function test_can_store_category() : void
     {
-        Passport::actingAs(
-            User::factory()->create(),
-            ['BlogApp']
-        );
-
-        $category = Category::factory()->create();
+        $user = User::factory()->create();
+        $user->roles()->sync(2);
+        Passport::actingAs($user, ['BlogApp']);
 
         $response = $this->post('/api/category', [
-            'name' => $category->name,
+            'name' => fake()->realTextBetween($minNbChars = 10, $maxNbChars = 25, $indexSize = 1),
         ]);
 
         $response->assertStatus(Response::HTTP_CREATED);
@@ -57,18 +51,35 @@ class CategoryTest extends TestCase
         ]);
     }
 
+    public function test_can_edit_category(): void
+    {
+        $user = User::factory()->create();
+        $user->roles()->sync(2);
+        Passport::actingAs($user, ['BlogApp']);
+
+        $category = Category::factory()->create();
+
+        $response = $this->get(route('category.edit', $category->id));
+
+        $response->assertStatus(Response::HTTP_OK);
+
+        $response->assertJsonStructure([
+            'status',
+            'message',
+            'data'
+        ]);
+    }
+
     public function test_can_update_category(): void
     {
-
-        Passport::actingAs(
-            User::factory()->create(),
-            ['BlogApp']
-        );
+        $user = User::factory()->create();
+        $user->roles()->sync(2);
+        Passport::actingAs($user, ['BlogApp']);
 
         $category = Category::factory()->create();
 
         $response = $this->put(route('category.update', $category->id), [
-            'name' => $category->name,
+            'name' => fake()->realTextBetween($minNbChars = 10, $maxNbChars = 25, $indexSize = 1),
         ]);
 
         $response->assertStatus(Response::HTTP_OK);
@@ -82,11 +93,9 @@ class CategoryTest extends TestCase
 
     public function test_can_show_category(): void
     {
-
-        Passport::actingAs(
-            User::factory()->create(),
-            ['BlogApp']
-        );
+        $user = User::factory()->create();
+        $user->roles()->sync(2);
+        Passport::actingAs($user, ['BlogApp']);
 
         $category = Category::factory()->create();
 
@@ -103,11 +112,9 @@ class CategoryTest extends TestCase
 
     public function test_can_delete_category(): void
     {
-
-        Passport::actingAs(
-            User::factory()->create(), 
-            ['BlogApp']
-        );
+        $user = User::factory()->create();
+        $user->roles()->sync(2);
+        Passport::actingAs($user, ['BlogApp']);
 
         $category = Category::factory()->create();
 
