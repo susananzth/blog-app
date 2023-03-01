@@ -16,7 +16,7 @@ class PostTest extends TestCase
 
     public function test_can_list_posts(): void
     {
-        User::factory()->create();
+        $user = User::factory()->create();
         $user->roles()->sync(2);
         Passport::actingAs($user, ['BlogApp']);
 
@@ -35,7 +35,7 @@ class PostTest extends TestCase
 
     public function test_can_create_post(): void
     {
-        User::factory()->create();
+        $user = User::factory()->create();
         $user->roles()->sync(2);
         Passport::actingAs($user, ['BlogApp']);
 
@@ -54,7 +54,7 @@ class PostTest extends TestCase
 
     public function test_can_store_post() : void
     {
-        User::factory()->create();
+        $user = User::factory()->create();
         $user->roles()->sync(2);
         Passport::actingAs($user, ['BlogApp']);
 

@@ -6,20 +6,24 @@ use Tests\TestCase;
 use App\Models\User;
 use Illuminate\Http\Response;
 use Laravel\Passport\Passport;
-use Laravel\Passport\Client;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class AuthenticationTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->artisan('passport:install', ['--no-interaction' => true, '--force' => true,]);
+    }
+    
     public function test_users_can_authenticate_using_email_and_password(): void
     {
-        Passport::actingAsClient(
-            Client::factory()->create(),
-            ['BlogApp']
-        );
         $user = User::factory()->create();
+        $user->roles()->sync(2);
+        Passport::actingAs($user, ['BlogApp']);
 
         $input_data = [
             'email'    => $user->email,
@@ -41,12 +45,6 @@ class AuthenticationTest extends TestCase
 
     public function test_users_can_not_authenticate_with_invalid_email(): void
     {
-        Passport::actingAsClient(
-            Client::factory()->create(),
-            ['BlogApp']
-        );
-        $user = User::factory()->create();
-
         $input_data = [
             'email'    => 'wrong@email.com',
             'password' => 'password'
@@ -67,11 +65,8 @@ class AuthenticationTest extends TestCase
 
     public function test_users_can_not_authenticate_with_invalid_password(): void
     {
-        Passport::actingAsClient(
-            Client::factory()->create(),
-            ['BlogApp']
-        );
         $user = User::factory()->create();
+        $user->roles()->sync(2);
 
         $input_data = [
             'email'    => $user->email,

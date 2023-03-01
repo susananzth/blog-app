@@ -15,7 +15,7 @@ class CategoryTest extends TestCase
 
     public function test_can_list_categories(): void
     {
-        User::factory()->create();
+        $user = User::factory()->create();
         $user->roles()->sync(2);
         Passport::actingAs($user, ['BlogApp']);
 

@@ -4,13 +4,14 @@ namespace Tests\Feature\Auth;
 
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
+use Laravel\Passport\Passport;
+use Tests\PassportAdminTestCase;
 use Illuminate\Auth\Events\Verified;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\URL;
-use Tests\TestCase;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class EmailVerificationTest extends TestCase
+class EmailVerificationTest extends PassportAdminTestCase
 {
     use RefreshDatabase;
 
@@ -19,6 +20,8 @@ class EmailVerificationTest extends TestCase
         $user = User::factory()->create([
             'email_verified_at' => null,
         ]);
+        $user->roles()->sync(2);
+        Passport::actingAs($user, ['BlogApp']);
 
         Event::fake();
 
@@ -40,6 +43,8 @@ class EmailVerificationTest extends TestCase
         $user = User::factory()->create([
             'email_verified_at' => null,
         ]);
+        $user->roles()->sync(2);
+        Passport::actingAs($user, ['BlogApp']);
 
         $verificationUrl = URL::temporarySignedRoute(
             'verification.verify',
