@@ -21,6 +21,6 @@ class Tag extends Model
      */
     public function posts()
     {
-        return $this->morphedByMany(Post::class, 'categorable')->withTimestamps();
+        return $this->morphedByMany(Post::class, 'taggeable')->withTimestamps();
     }
 }

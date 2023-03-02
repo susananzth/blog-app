@@ -118,8 +118,17 @@ class TagController extends Controller
                 '403 Forbidden', 
                 Response::HTTP_FORBIDDEN);
         }
-        Tag::destroy($tag->id);
+        $tag = Tag::find($tag->id);
+        if (count($tag->posts) == 0) {
+            Tag::destroy($tag->id);
 
-        return $this->successResponse('', 'Tag deleted successfully.', Response::HTTP_OK);
+            return $this->successResponse('', 'Tag deleted successfully.', Response::HTTP_OK);
+        } else {
+            return $this->errorResponse(
+                'The tag cannot be removed because it is associated with posts',
+                Response::HTTP_UNPROCESSABLE_ENTITY 
+            );
+        }
+
     }
 }
