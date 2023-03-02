@@ -63,7 +63,9 @@ class RoleController extends Controller
         $role->permissions()->attach($inputs['permission']);
 
         return $this->successResponse(
-            $role->load('permissions'), 'Rol registrado con éxito.');
+            $role->load('permissions'), 
+            'Rol registrado con éxito.', 
+            Response::HTTP_CREATED);
     }
 
     /**
