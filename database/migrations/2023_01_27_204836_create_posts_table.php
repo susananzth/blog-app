@@ -18,7 +18,8 @@ return new class extends Migration
             $table->string('title', 200)->unique();
             $table->text('body');
             $table->boolean('status');
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent();
             $table->softDeletes();
         });
     }

@@ -18,7 +18,8 @@ return new class extends Migration
             $table->string('title', 100)->unique();
             $table->string('menu', 100);
             $table->string('permission', 150);
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent();
             $table->softDeletes();
         });
     }

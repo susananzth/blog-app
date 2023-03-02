@@ -18,7 +18,8 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->text('scopes')->nullable();
             $table->boolean('revoked');
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent();
             $table->dateTime('expires_at')->nullable();
         });
     }

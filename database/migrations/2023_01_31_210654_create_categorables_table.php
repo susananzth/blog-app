@@ -16,7 +16,8 @@ return new class extends Migration
         Schema::create('categorables', function (Blueprint $table) {
             $table->bigInteger('category_id');
             $table->morphs('categorable');
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent();
             $table->softDeletes();
         });
     }

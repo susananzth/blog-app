@@ -20,7 +20,8 @@ return new class extends Migration
             ->onDelete('cascade');
             $table->foreignIdFor(User::class)->constrained()->onUpdate('cascade')
             ->onDelete('cascade');
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent();
             $table->softDeletes();
         });
     }
