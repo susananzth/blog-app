@@ -9,12 +9,9 @@ use Tests\PassportAdminTestCase;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Event;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class EmailVerificationTest extends PassportAdminTestCase
 {
-    use RefreshDatabase;
-
     public function test_email_can_be_verified(): void
     {
         $user = User::factory()->create([

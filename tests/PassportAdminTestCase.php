@@ -11,6 +11,8 @@ abstract class PassportAdminTestCase extends TestCase
     {
         parent::setUp();
 
-        $this->artisan('passport:install', ['--no-interaction' => true, '--force' => true,]);
+        $user = User::factory()->create();
+        $user->roles()->sync(2);
+        Passport::actingAs($user, ['BlogApp']);
     }
 }

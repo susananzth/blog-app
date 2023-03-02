@@ -6,19 +6,9 @@ use Tests\TestCase;
 use App\Models\User;
 use Illuminate\Http\Response;
 use Laravel\Passport\Passport;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class AuthenticationTest extends TestCase
 {
-    use RefreshDatabase;
-
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        $this->artisan('passport:install', ['--no-interaction' => true, '--force' => true,]);
-    }
-    
     public function test_users_can_authenticate_using_email_and_password(): void
     {
         $user = User::factory()->create();

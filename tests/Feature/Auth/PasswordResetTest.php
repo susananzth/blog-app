@@ -4,15 +4,12 @@ namespace Tests\Feature\Auth;
 
 use App\Models\User;
 use Laravel\Passport\Passport;
-use Illuminate\Auth\Notifications\ResetPassword;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Notification;
 use Tests\PassportAdminTestCase;
+use Illuminate\Auth\Notifications\ResetPassword;
+use Illuminate\Support\Facades\Notification;
 
 class PasswordResetTest extends PassportAdminTestCase
 {
-    use RefreshDatabase;
-
     public function test_reset_password_link_can_be_requested(): void
     {
         Notification::fake();

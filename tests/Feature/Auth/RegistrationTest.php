@@ -6,12 +6,9 @@ use App\Models\User;
 use Illuminate\Http\Response;
 use Laravel\Passport\Passport;
 use Tests\PassportAdminTestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class RegistrationTest extends PassportAdminTestCase
 {
-    use RefreshDatabase;
-
     public function test_new_users_can_register(): void
     {
         $user = User::factory()->create();
