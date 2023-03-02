@@ -19,6 +19,7 @@ return new class extends Migration
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
             $table->softDeletes();
+            $table->unique(['tag_id', 'taggeable_type', 'taggeable_id']);
         });
     }
 
