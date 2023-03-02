@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Post;
+use App\Models\Tag;
 use App\Models\Category;
 use Illuminate\Http\Response;
 use Laravel\Passport\Passport;
@@ -28,6 +29,7 @@ class PostTest extends PassportAdminTestCase
     public function test_can_create_post(): void
     {
         $category = Category::factory(2)->create();
+        $tag      = Tag::factory(2)->create();
 
         $response = $this->get('/api/post/create');
 
@@ -43,6 +45,7 @@ class PostTest extends PassportAdminTestCase
     public function test_can_store_post() : void
     {
         $category = Category::factory()->create();
+        $tag      = Tag::factory()->create();
 
         $response = $this->post('/api/post', [
             'title' => fake()->realTextBetween($minNbChars = 20, $maxNbChars = 120, $indexSize = 1),
@@ -50,6 +53,9 @@ class PostTest extends PassportAdminTestCase
             'status' => 1,
             'category' => [
                 $category->id
+            ],
+            'tag' => [
+                $tag->id
             ]
         ]);
 
@@ -67,6 +73,7 @@ class PostTest extends PassportAdminTestCase
         $post = Post::factory()->create();
 
         $category = Category::factory(2)->create();
+        $tag      = Tag::factory(2)->create();
 
         $response = $this->get(route('post.edit', $post->id));
 
@@ -84,6 +91,7 @@ class PostTest extends PassportAdminTestCase
         $post = Post::factory()->create();
 
         $category = Category::factory()->create();
+        $tag      = Tag::factory()->create();
 
         $response = $this->put(route('post.update', $post->id), [
             'title' => fake()->realTextBetween($minNbChars = 20, $maxNbChars = 120, $indexSize = 2),
@@ -91,6 +99,9 @@ class PostTest extends PassportAdminTestCase
             'status' => 1,
             'category' => [
                 $category->id
+            ],
+            'tag' => [
+                $tag->id
             ]
         ]);
 

@@ -30,6 +30,8 @@ class StoreRequest extends FormRequest
             'status'     => ['bail', 'required', 'boolean'],
             'category'   => ['bail', 'nullable', 'array'],
             'category.*' => ['bail', 'sometimes', 'exists:categories,id'],
+            'tag'        => ['bail', 'nullable', 'array'],
+            'tag.*'      => ['bail', 'sometimes', 'exists:tags,id'],
         ];
     }
 }

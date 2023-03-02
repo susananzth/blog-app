@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\Tag;
 use App\Models\Category;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Gate;
@@ -23,7 +24,7 @@ class PostController extends Controller
                 '403 Forbidden', 
                 Response::HTTP_FORBIDDEN);
         }
-        $posts = Post::with('categories')->get();
+        $posts = Post::with('categories')->with('tags')->get();
         return $this->successResponse($posts);
     }
 
@@ -39,8 +40,9 @@ class PostController extends Controller
                 '403 Forbidden', 
                 Response::HTTP_FORBIDDEN);
         }
-        $categories = Category::all();
-        return $this->successResponse($categories);
+        $data['categories'] = Category::all();
+        $data['tags']       = Tag::all();
+        return $this->successResponse($data);
     }
 
     /**
@@ -60,7 +62,12 @@ class PostController extends Controller
 
         $post = Post::create($inputs);
 
-        $post->categories()->attach($inputs['category']);
+        if (isset($inputs['category'])) {
+            $post->categories()->attach($inputs['category']);
+        }
+        if (isset($inputs['tag'])) {
+            $post->tags()->attach($inputs['tag']);
+        }
 
         return $this->successResponse(
             $post->load('categories'), 
@@ -82,7 +89,7 @@ class PostController extends Controller
                 '403 Forbidden', 
                 Response::HTTP_FORBIDDEN);
         }
-        return $this->successResponse($post->load('categories'));
+        return $this->successResponse($post->load('categories')->load('tags'));
     }
 
     /**
@@ -98,8 +105,9 @@ class PostController extends Controller
                 '403 Forbidden', 
                 Response::HTTP_FORBIDDEN);
         }
-        $data['post']       = $post->load('categories');
+        $data['post']       = $post->load('categories')->load('tags');
         $data['categories'] = Category::all();
+        $data['tags']       = Tag::all();
 
         return $this->successResponse($data);
     }
@@ -125,10 +133,16 @@ class PostController extends Controller
         $post->update($inputs);
 
         $post->categories()->detach();
-        $post->categories()->attach($inputs['category']);
+        if (isset($inputs['category'])) {
+            $post->categories()->attach($inputs['category']);
+        }
+        $post->tags()->detach();
+        if (isset($inputs['tag'])) {
+            $post->tags()->attach($inputs['tag']);
+        }
 
         return $this->successResponse(
-            $post->load('categories'), 'Post updated successfully.'
+            $post->load('categories')->load('tags'), 'Post updated successfully.'
         );
     }
 
