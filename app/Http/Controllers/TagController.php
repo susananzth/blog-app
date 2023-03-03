@@ -126,7 +126,7 @@ class TagController extends Controller
         } else {
             return $this->errorResponse(
                 'The tag cannot be removed because it is associated with posts',
-                Response::HTTP_UNPROCESSABLE_ENTITY 
+                Response::HTTP_CONFLICT 
             );
         }
 

@@ -202,7 +202,7 @@ class TagTest extends PassportAdminTestCase
 
         $response = $this->delete(route('tag.destroy', $tag->id));
 
-        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
+        $response->assertStatus(Response::HTTP_CONFLICT);
 
         $response->assertJsonStructure([
             'status',
