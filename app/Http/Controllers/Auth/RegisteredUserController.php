@@ -30,8 +30,7 @@ class RegisteredUserController extends Controller
         $data['token'] = $user->createToken('BlogApp')->accessToken;
         $data['name']  = $user->name;
 
-        //Auth::check($user);
-        Auth::login($user);
+        Auth::check($user);
 
         return $this->successResponse($data, 'User register successfully.');
     }

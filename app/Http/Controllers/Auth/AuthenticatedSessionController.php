@@ -19,8 +19,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        //if (Auth::check([
-        if (Auth::attempt([
+        if (Auth::check([
             'email'    => $request->email, 
             'password' => $request->password
         ])) { 
