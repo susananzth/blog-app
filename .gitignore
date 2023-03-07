@@ -8,6 +8,7 @@
 .env.testing
 .env.backup
 .env.production
+firebase-credentials.json
 .phpunit.result.cache
 Homestead.json
 Homestead.yaml
