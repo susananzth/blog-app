@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Image;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\Category\StoreRequest;
@@ -22,7 +23,17 @@ class CategoryController extends Controller
                 '403 Forbidden', 
                 Response::HTTP_FORBIDDEN);
         }
-        $categories = Category::all();
+        $firebase = app('firebase.storage');
+        $bucket   = $firebase->getBucket();
+        
+        $categories = Category::all()->load('image');
+        foreach ($categories as $category) {
+            if ($category->image != null) {
+                $object   = $bucket->object('images/' . $category->image->name);
+                $url      = $object->signedUrl(new \DateTime('tomorrow'));
+                $category->image->url = $url;
+            }
+        }
         return $this->successResponse($categories);
     }
 
@@ -42,6 +53,30 @@ class CategoryController extends Controller
         $inputs = $request->validated();
 
         $category = Category::create($inputs);
+
+        if (isset($inputs['image'])) {
+
+            if (isset($inputs['image_name'])) {
+                $filename = $inputs['image_name'].'.'.$inputs['image']->extension();
+            } else {
+                $filename = rand(0000, 9999).time().'.'.$inputs['image']->extension();
+            }
+            // Almacenar imagen
+            $firebase = app('firebase.storage');
+            $bucket   = $firebase->getBucket();
+            $file     = $inputs['image'];
+            $bucket->upload(fopen($file->getPathname(), 'r'), ['name' => 'images/' . $filename]);
+
+            $image = new Image();
+            $image->name = $filename;
+            $image->imageable()->associate($category);
+            $image->save();
+
+            $category = $category->load('image');
+            $object   = $bucket->object('images/' . $category->image->name);
+            $url      = $object->signedUrl(new \DateTime('tomorrow'));
+            $category->image->url = $url;
+        }
 
         return $this->successResponse(
             $category, 
@@ -63,6 +98,14 @@ class CategoryController extends Controller
                 '403 Forbidden', 
                 Response::HTTP_FORBIDDEN);
         }
+        $category = $category->load('image');
+        if ($category->image != null) {
+            $firebase = app('firebase.storage');
+            $bucket   = $firebase->getBucket();
+            $object   = $bucket->object('images/' . $category->image->name);
+            $url      = $object->signedUrl(new \DateTime('tomorrow'));
+            $category->image->url = $url;
+        }
         return $this->successResponse($category);
     }
 
@@ -78,6 +121,14 @@ class CategoryController extends Controller
             return $this->errorResponse(
                 '403 Forbidden', 
                 Response::HTTP_FORBIDDEN);
+        }
+        $category = $category->load('image');
+        if ($category->image != null) {
+            $firebase = app('firebase.storage');
+            $bucket   = $firebase->getBucket();
+            $object   = $bucket->object('images/' . $category->image->name);
+            $url      = $object->signedUrl(new \DateTime('tomorrow'));
+            $category->image->url = $url;
         }
         return $this->successResponse($category);
     }
@@ -102,6 +153,35 @@ class CategoryController extends Controller
 
         $category->update($inputs);
 
+        if (isset($inputs['image'])) {
+
+            if (isset($inputs['image_name'])) {
+                $filename = $inputs['image_name'].'.'.$inputs['image']->extension();
+            } else {
+                $filename = rand(0000, 9999).time().'.'.$inputs['image']->extension();
+            }
+            // Almacenar imagen
+            $firebase = app('firebase.storage');
+            $bucket   = $firebase->getBucket();
+            $file     = $inputs['image'];
+            $bucket->upload(fopen($file->getPathname(), 'r'), ['name' => 'images/' . $filename]);
+            if ($category->image->name != null) {
+                // Elimina imagen anterior para almacenar la nueva
+                $object   = $bucket->object('images/' . $category->image->name);
+                $url      = $object->delete();
+                $category->image()->delete();
+            }
+            $image = new Image();
+            $image->name = $filename;
+            $image->imageable()->associate($category);
+            $image->save();
+
+            $category = $category->load('image');
+            $object   = $bucket->object('images/' . $category->image->name);
+            $url      = $object->signedUrl(new \DateTime('tomorrow'));
+            $category->image->url = $url;
+        }
+
         return $this->successResponse($category, 'Category updated successfully.');
     }
 
@@ -117,6 +197,15 @@ class CategoryController extends Controller
             return $this->errorResponse(
                 '403 Forbidden', 
                 Response::HTTP_FORBIDDEN);
+        }
+        if ($category->image->name != null) {
+            $firebase = app('firebase.storage');
+            $bucket   = $firebase->getBucket();
+            $object   = $bucket->object('images/' . $category->image->name);
+            $url      = $object->delete();
+        }
+        if ($category->image) {
+            $category->image()->delete();
         }
         Category::destroy($category->id);
 
