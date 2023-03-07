@@ -25,13 +25,15 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'title'      => ['bail', 'required', 'string', 'max:200', 'unique:posts,title'],
-            'body'       => ['bail', 'required', 'string'],
-            'status'     => ['bail', 'required', 'boolean'],
-            'category'   => ['bail', 'nullable', 'array'],
-            'category.*' => ['bail', 'sometimes', 'exists:categories,id'],
-            'tag'        => ['bail', 'nullable', 'array'],
-            'tag.*'      => ['bail', 'sometimes', 'exists:tags,id'],
+            'title'      => 'bail|required|string|max:200|unique:posts,title',
+            'cover_name' => 'bail|nullable|string|max:100|unique:images,name',
+            'cover'      => 'bail|nullable|file|mimes:jpg,jpeg,png|max:3000',
+            'body'       => 'bail|required|string',
+            'status'     => 'bail|required|boolean',
+            'category'   => 'bail|nullable|array',
+            'category.*' => 'bail|sometimes|exists:categories,id',
+            'tag'        => 'bail|nullable|array',
+            'tag.*'      => 'bail|sometimes|exists:tags,id',
         ];
     }
 }

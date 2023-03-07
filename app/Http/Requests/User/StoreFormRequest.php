@@ -27,9 +27,10 @@ class StoreFormRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'     => ['required', 'string', 'max:255'],
-            'email'    => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Password::defaults()],
+            'name'        => ['bail', 'required', 'string', 'max:255'],
+            'email'       => ['bail', 'required', 'string', 'email', 'max:255', 'unique:'.User::class],
+            'password'    => ['bail', 'required', 'confirmed', Password::defaults()],
+            'pic_profile' => ['bail', 'nullable', 'file', 'mimes:jpg,jpeg,png', 'max:3000'],
         ];
     }
 }
