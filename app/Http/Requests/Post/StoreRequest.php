@@ -26,7 +26,6 @@ class StoreRequest extends FormRequest
     {
         return [
             'title'      => 'bail|required|string|max:200|unique:posts,title',
-            'cover_name' => 'bail|nullable|string|max:100|unique:images,name',
             'cover'      => 'bail|nullable|file|mimes:jpg,jpeg,png|max:3000',
             'body'       => 'bail|required|string',
             'status'     => 'bail|required|boolean',

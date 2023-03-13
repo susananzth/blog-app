@@ -25,9 +25,8 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'       => 'bail|required|string|max:100|unique:categories,name',
-            'image_name' => 'bail|nullable|string|max:100|unique:images,name',
-            'image'      => 'bail|nullable|file|mimes:jpg,jpeg,png|max:3000',
+            'name'  => 'bail|required|string|max:100|unique:categories,name',
+            'image' => 'bail|nullable|file|mimes:jpg,jpeg,png|max:3000',
         ];
     }
 }

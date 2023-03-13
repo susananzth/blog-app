@@ -24,11 +24,9 @@ class UpdateRequest extends FormRequest
      */
     public function rules()
     {
-        dd($this);
         return [
-            'name'       => 'bail|required|string|max:100|unique:categories,name,' . $this->category['id'],
-            'image_name' => 'bail|nullable|string|max:100|unique:images,name,' . $this->category['id'],
-            'image'      => 'bail|nullable|file|mimes:jpg,jpeg,png|max:3000',
+            'name'  => 'bail|required|string|max:100|unique:categories,name,' . $this->category['id'],
+            'image' => 'bail|nullable|file|mimes:jpg,jpeg,png|max:3000',
         ];
     }
 }

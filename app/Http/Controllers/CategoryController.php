@@ -55,12 +55,7 @@ class CategoryController extends Controller
         $category = Category::create($inputs);
 
         if (isset($inputs['image'])) {
-
-            if (isset($inputs['image_name'])) {
-                $filename = $inputs['image_name'].'.'.$inputs['image']->extension();
-            } else {
-                $filename = rand(0000, 9999).time().'.'.$inputs['image']->extension();
-            }
+            $filename = rand(0000, 9999).time().'.'.$inputs['image']->extension();
             // Almacenar imagen
             $firebase = app('firebase.storage');
             $bucket   = $firebase->getBucket();
@@ -154,12 +149,7 @@ class CategoryController extends Controller
         $category->update($inputs);
 
         if (isset($inputs['image'])) {
-
-            if (isset($inputs['image_name'])) {
-                $filename = $inputs['image_name'].'.'.$inputs['image']->extension();
-            } else {
-                $filename = rand(0000, 9999).time().'.'.$inputs['image']->extension();
-            }
+            $filename = rand(0000, 9999).time().'.'.$inputs['image']->extension();
             // Almacenar imagen
             $firebase = app('firebase.storage');
             $bucket   = $firebase->getBucket();
@@ -175,8 +165,12 @@ class CategoryController extends Controller
             $image->name = $filename;
             $image->imageable()->associate($category);
             $image->save();
+        }
 
-            $category = $category->load('image');
+        $category = $category->load('image');
+        if ($category->image != null) {
+            $firebase = app('firebase.storage');
+            $bucket   = $firebase->getBucket();
             $object   = $bucket->object('images/' . $category->image->name);
             $url      = $object->signedUrl(new \DateTime('tomorrow'));
             $category->image->url = $url;
