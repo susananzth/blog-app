@@ -14,7 +14,7 @@ class TagTest extends PassportAdminTestCase
     {
         $tag = Tag::factory(5)->create();
 
-        $response = $this->get('/api/tag');
+        $response = $this->get(route('tag.index'));
 
         $response->assertStatus(Response::HTTP_OK);
 
@@ -27,8 +27,8 @@ class TagTest extends PassportAdminTestCase
 
     public function test_can_store_tag() : void
     {
-        $response = $this->post('/api/tag', [
-            'name' => fake()->realTextBetween($minNbChars = 10, $maxNbChars = 25, $indexSize = 1),
+        $response = $this->post(route('tag.store'), [
+            'name' => fake()->text(25),
         ]);
 
         $response->assertStatus(Response::HTTP_CREATED);
@@ -42,8 +42,8 @@ class TagTest extends PassportAdminTestCase
 
     public function test_can_not_store_tag_with_invalid_name() : void
     {
-        $response = $this->post('/api/tag', [
-            'name' => fake()->realTextBetween($minNbChars = 100, $maxNbChars = 250, $indexSize = 1),
+        $response = $this->post(route('tag.store'), [
+            'name' => fake()->text(25),
         ]);
 
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
@@ -59,7 +59,7 @@ class TagTest extends PassportAdminTestCase
     {
         $tag = Tag::factory()->create();
 
-        $response = $this->post('/api/tag', [
+        $response = $this->post(route('tag.store'), [
             'name' => $tag->name,
         ]);
 
@@ -105,7 +105,7 @@ class TagTest extends PassportAdminTestCase
         $tag = Tag::factory()->create();
 
         $response = $this->put(route('tag.update', $tag->id), [
-            'name' => fake()->realTextBetween($minNbChars = 10, $maxNbChars = 25, $indexSize = 1),
+            'name' => fake()->text(25),
         ]);
 
         $response->assertStatus(Response::HTTP_OK);
@@ -122,7 +122,7 @@ class TagTest extends PassportAdminTestCase
         $tag = Tag::factory()->create();
 
         $response = $this->put(route('tag.update', $tag->id), [
-            'name' => fake()->realTextBetween($minNbChars = 100, $maxNbChars = 250, $indexSize = 1),
+            'name' => fake()->text(25),
         ]);
 
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);

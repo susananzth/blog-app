@@ -6,7 +6,6 @@ use App\Models\Post;
 use App\Models\Tag;
 use App\Models\Category;
 use Illuminate\Http\Response;
-use Laravel\Passport\Passport;
 use Tests\PassportAdminTestCase;
 
 class PostTest extends PassportAdminTestCase
@@ -15,7 +14,7 @@ class PostTest extends PassportAdminTestCase
     {
         $post = Post::factory(5)->create();
 
-        $response = $this->get('/api/post');
+        $response = $this->get(route('post.index'));
 
         $response->assertStatus(Response::HTTP_OK);
 
@@ -31,7 +30,7 @@ class PostTest extends PassportAdminTestCase
         $category = Category::factory(2)->create();
         $tag      = Tag::factory(2)->create();
 
-        $response = $this->get('/api/post/create');
+        $response = $this->get(route('post.create'));
 
         $response->assertStatus(Response::HTTP_OK);
 
@@ -47,8 +46,8 @@ class PostTest extends PassportAdminTestCase
         $category = Category::factory()->create();
         $tag      = Tag::factory()->create();
 
-        $response = $this->post('/api/post', [
-            'title' => fake()->realTextBetween($minNbChars = 20, $maxNbChars = 120, $indexSize = 1),
+        $response = $this->post(route('post.store'), [
+            'title' => fake()->text(150),
             'body' => fake()->paragraph(),
             'status' => 1,
             'category' => [
@@ -94,7 +93,7 @@ class PostTest extends PassportAdminTestCase
         $tag      = Tag::factory()->create();
 
         $response = $this->put(route('post.update', $post->id), [
-            'title' => fake()->realTextBetween($minNbChars = 20, $maxNbChars = 120, $indexSize = 2),
+            'title' => fake()->text(150),
             'body' => fake()->paragraph(),
             'status' => 1,
             'category' => [

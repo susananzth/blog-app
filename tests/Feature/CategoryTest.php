@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use App\Models\Category;
 use Illuminate\Http\Response;
-use Laravel\Passport\Passport;
 use Tests\PassportAdminTestCase;
 
 class CategoryTest extends PassportAdminTestCase
@@ -13,7 +12,7 @@ class CategoryTest extends PassportAdminTestCase
     {
         $category = Category::factory(5)->create();
 
-        $response = $this->get('/api/category');
+        $response = $this->get(route('category.index'));
 
         $response->assertStatus(Response::HTTP_OK);
 
@@ -26,11 +25,26 @@ class CategoryTest extends PassportAdminTestCase
 
     public function test_can_store_category() : void
     {
-        $response = $this->post('/api/category', [
-            'name' => fake()->realTextBetween($minNbChars = 10, $maxNbChars = 25, $indexSize = 1),
+        $response = $this->post(route('category.store'), [
+            'name' => fake()->text(25),
         ]);
 
         $response->assertStatus(Response::HTTP_CREATED);
+
+        $response->assertJsonStructure([
+            'status',
+            'message',
+            'data'
+        ]);
+    }
+
+    public function test_can_not_store_category_invalid_name() : void
+    {
+        $response = $this->post(route('category.store'), [
+            'name' => fake()->text(1000),
+        ]);
+
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
 
         $response->assertJsonStructure([
             'status',
@@ -59,7 +73,7 @@ class CategoryTest extends PassportAdminTestCase
         $category = Category::factory()->create();
 
         $response = $this->put(route('category.update', $category->id), [
-            'name' => fake()->realTextBetween($minNbChars = 10, $maxNbChars = 25, $indexSize = 1),
+            'name' => fake()->text(25),
         ]);
 
         $response->assertStatus(Response::HTTP_OK);

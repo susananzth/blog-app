@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use App\Models\Role;
 use App\Models\Permission;
 use Illuminate\Http\Response;
-use Laravel\Passport\Passport;
 use Tests\PassportAdminTestCase;
 
 class RoleTest extends PassportAdminTestCase
@@ -14,7 +13,7 @@ class RoleTest extends PassportAdminTestCase
     {
         $roles = Role::factory(5)->create();
 
-        $response = $this->get('/api/role');
+        $response = $this->get(route('role.index'));
 
         $response->assertStatus(Response::HTTP_OK);
 
@@ -29,7 +28,7 @@ class RoleTest extends PassportAdminTestCase
     {
         $permissions = Permission::factory(2)->create();
 
-        $response = $this->get('/api/role/create');
+        $response = $this->get(route('role.create'));
 
         $response->assertStatus(Response::HTTP_OK);
 
@@ -44,8 +43,8 @@ class RoleTest extends PassportAdminTestCase
     {
         $permission = Permission::factory()->create();
 
-        $response = $this->post('/api/role', [
-            'title' => fake()->realTextBetween($minNbChars = 10, $maxNbChars = 50, $indexSize = 1),
+        $response = $this->post(route('role.store'), [
+            'title' => fake()->text(150),
             'created_at' => now(),
             'updated_at' => now(),
             'permission' => [
@@ -86,7 +85,7 @@ class RoleTest extends PassportAdminTestCase
         $permission = Permission::factory()->create();
 
         $response = $this->put(route('role.update', $role->id), [
-            'title' => fake()->realTextBetween($minNbChars = 10, $maxNbChars = 50, $indexSize = 2),
+            'title' => fake()->text(25),
             'created_at' => now(),
             'updated_at' => now(),
             'permission' => [
