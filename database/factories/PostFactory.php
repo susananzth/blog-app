@@ -17,7 +17,7 @@ class PostFactory extends Factory
     public function definition()
     {
         return [
-            'title'  => fake()->realTextBetween($minNbChars = 20, $maxNbChars = 120, $indexSize = 2),
+            'title'  => fake()->text(150),
             'body'   => fake()->paragraph(),
             'status' => 1,
         ];
