@@ -9,6 +9,7 @@ use App\Http\Livewire\Dashboard;
 use App\Http\Livewire\DocumentTypes;
 use App\Http\Livewire\Roles;
 use App\Http\Livewire\States;
+use App\Http\Livewire\Tags;
 use App\Http\Livewire\Users;
 use App\Http\Livewire\Profiles;
 use Illuminate\Support\Facades\Route;
@@ -44,6 +45,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/document',  DocumentTypes::class)->name('document_types');
     Route::get('/role',      Roles::class        )->name('roles');
     Route::get('/state',     States::class       )->name('states');
+    Route::get('/tag',       Tags::class         )->name('tags');
     Route::get('/user',      Users::class        )->name('users');
 });
 

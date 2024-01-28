@@ -105,6 +105,14 @@
                     <span>{{ __('Categories') }}</span>
                 </x-responsive-nav-link>
                 @endcan
+                @can('tag_index')
+                <x-responsive-nav-link :href="route('tags')" :active="request()->routeIs('tags')" class="flex flex-row">
+                    <div class="basis-6">
+                        <i class="fa-solid fa-tags"></i>
+                    </div>
+                    <span>{{ __('Tags') }}</span>
+                </x-responsive-nav-link>
+                @endcan
                 @can('document_type_index')
                 <x-responsive-nav-link :href="route('document_types')" :active="request()->routeIs('document_types')" class="flex flex-row">
                     <div class="basis-6">

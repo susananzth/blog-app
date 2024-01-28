@@ -33,7 +33,6 @@ class Categories extends Component
         $this->image = '';
         $this->imageEgit = '';
         $this->status = '';
-        $this->phone_code = '';
     }
 
     public function resetValidationAndFields()

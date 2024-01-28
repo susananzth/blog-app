@@ -54,6 +54,11 @@ class PermissionSeeder extends Seeder
             ['title' => 'category_add', 'menu' => 'Category', 'permission' => 'Add', 'created_at' => now(), 'updated_at' => now(),],
             ['title' => 'category_edit', 'menu' => 'Category', 'permission' => 'Edit', 'created_at' => now(), 'updated_at' => now(),],
             ['title' => 'category_delete', 'menu' => 'Category', 'permission' => 'Delete', 'created_at' => now(), 'updated_at' => now(),],
+            // Tag
+            ['title' => 'tag_index', 'menu' => 'Tag', 'permission' => 'See', 'created_at' => now(), 'updated_at' => now(),],
+            ['title' => 'tag_add', 'menu' => 'Tag', 'permission' => 'Add', 'created_at' => now(), 'updated_at' => now(),],
+            ['title' => 'tag_edit', 'menu' => 'Tag', 'permission' => 'Edit', 'created_at' => now(), 'updated_at' => now(),],
+            ['title' => 'tag_delete', 'menu' => 'Tag', 'permission' => 'Delete', 'created_at' => now(), 'updated_at' => now(),],
             // Profile
             ['title' => 'profile_index', 'menu' => 'Profile', 'permission' => 'See', 'created_at' => now(), 'updated_at' => now(),],
             ['title' => 'profile_edit', 'menu' => 'Profile', 'permission' => 'Edit', 'created_at' => now(), 'updated_at' => now(),],
