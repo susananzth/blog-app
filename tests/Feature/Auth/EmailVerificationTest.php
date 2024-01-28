@@ -4,21 +4,32 @@ namespace Tests\Feature\Auth;
 
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
-use Laravel\Passport\Passport;
-use Tests\PassportAdminTestCase;
 use Illuminate\Auth\Events\Verified;
-use Illuminate\Support\Facades\URL;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\URL;
+use Tests\TestCase;
 
-class EmailVerificationTest extends PassportAdminTestCase
+class EmailVerificationTest extends TestCase
 {
+    use RefreshDatabase;
+
+    public function test_email_verification_screen_can_be_rendered(): void
+    {
+        $user = User::factory()->create([
+            'email_verified_at' => null,
+        ]);
+
+        $response = $this->actingAs($user)->get('/verify-email');
+
+        $response->assertStatus(200);
+    }
+
     public function test_email_can_be_verified(): void
     {
         $user = User::factory()->create([
             'email_verified_at' => null,
         ]);
-        $user->roles()->sync(2);
-        Passport::actingAs($user, ['BlogApp']);
 
         Event::fake();
 
@@ -32,7 +43,7 @@ class EmailVerificationTest extends PassportAdminTestCase
 
         Event::assertDispatched(Verified::class);
         $this->assertTrue($user->fresh()->hasVerifiedEmail());
-        $response->assertRedirect(config('app.frontend_url').RouteServiceProvider::HOME.'?verified=1');
+        $response->assertRedirect(RouteServiceProvider::HOME.'?verified=1');
     }
 
     public function test_email_is_not_verified_with_invalid_hash(): void
@@ -40,8 +51,6 @@ class EmailVerificationTest extends PassportAdminTestCase
         $user = User::factory()->create([
             'email_verified_at' => null,
         ]);
-        $user->roles()->sync(2);
-        Passport::actingAs($user, ['BlogApp']);
 
         $verificationUrl = URL::temporarySignedRoute(
             'verification.verify',

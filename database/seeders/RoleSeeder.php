@@ -2,37 +2,60 @@
 
 namespace Database\Seeders;
 
-use App\Models\Role;
-use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
+use App\Models\Role;
+use App\Models\Permission;
 
 class RoleSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
         $roles = [
             [
-                'title' => 'Cliente',
+                'title' => 'Super Admin',
+                'status' => true,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'title' => 'Super Administrador',
+                'title' => 'Admin',
+                'status' => true,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
-                'title' => 'Editor',
+                'title' => 'User',
+                'status' => true,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
         ];
 
         Role::insert($roles);
+
+        $admin_permissions = Permission::all();
+        Role::findOrFail(1)->permissions()->sync($admin_permissions->pluck('id'));
+        $user_permissions = $admin_permissions->filter(function ($permission) {
+            $str = strpos($permission->title, 'index');
+            if ($str !== false) {
+                return true;
+            } else {
+                return false;
+            }
+        });
+        Role::findOrFail(2)->permissions()->sync($user_permissions);
+        $user_permissions = $admin_permissions->filter(function ($permission) {
+            $str = strpos($permission->title, 'profile');
+            if ($str !== false) {
+                return true;
+            } else {
+                return false;
+            }
+        });
+        Role::findOrFail(3)->permissions()->sync($user_permissions);
     }
 }

@@ -21,8 +21,7 @@ return new class extends Migration
             $table->boolean('personal_access_client');
             $table->boolean('password_client');
             $table->boolean('revoked');
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrent();
+            $table->timestamps();
         });
     }
 

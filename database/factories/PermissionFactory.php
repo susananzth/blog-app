@@ -14,12 +14,12 @@ class PermissionFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
         return [
-            'title' => fake()->text(25),
-            'menu' => fake()->text(25),
-            'permission' => fake()->text(50),
+            'title'      => fake()->text(25),
+            'menu'       => fake()->text(10),
+            'permission' => fake()->text(10),
         ];
     }
 }
