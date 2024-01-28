@@ -1,6 +1,6 @@
 # Sistema de Blog (Breeze Livewire)
 
-Proyecto base de Blog **Laravel 10** utilizando **Laravel Livewire** y **Laravel Breeze** que incluye las siguientes funcionalidades de autenticación:
+Proyecto base de Blog en **Laravel 10** utilizando **Laravel Livewire** y **Laravel Breeze** que incluye las siguientes funcionalidades:
 * Todo lo incluido en el proyecto de [Laravel Login](https://github.com/susananzth/Laravel_Login_Panel_Roles).
 * CRUD de Tags.
 * CRUD de Categorías.

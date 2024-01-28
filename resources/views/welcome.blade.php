@@ -1,32 +1,25 @@
 <x-guest-layout>
     <div class="container mx-auto px-4">
         <h4 class="border-b text-4xl leading-tight mb-4 pt-8">
-            Sistema de inicio de sesión (Breeze Livewire)
+            Sistema de Blog (Breeze Livewire)
         </h4>
         <p class="mb-1 mt-0 text-lg leading-relaxed">
-            Proyecto base de inicio de sesión (login) en <strong>Laravel 10</strong>
-            utilizando <strong>Laravel Livewire</strong> que
-            incluye las siguientes vistas de autenticación:
+            Proyecto base de Blog en <strong>Laravel 10</strong>
+            utilizando <strong>Laravel Breeze</strong> y <strong>Laravel Livewire</strong> que
+            incluye las siguientes funcionalidades:
         </p>
         <ul class="list-disc list-inside leading-relaxed mb-4 mt-0">
-            <li>Inicio de sesión.</li>
-            <li>Registro de usuario.</li>
-            <li>Restablecimiento de contraseña.</li>
-            <li>Verificación de correo electrónico.</li>
-            <li>Confirmación de contraseña.</li>
-            <li>Página de "perfil" donde el usuario puede actualizar su información.</li>
-        </ul>
-        <p class="mb-1 mt-0 text-lg leading-relaxed">
-            Agregando personalización y funcionalidades adicionales como:
-        </p>
-        <ul class="list-disc list-inside leading-relaxed mb-4 mt-0">
-            <li>Logo y colores representativos de la marca.</li>
-            <li>Cambio de lenguaje entre Español - Inglés.</li>
-            <li>Respuesta de excepciones.</li>
-            <li>Mayor información del usuario.</li>
-            <li>CRUD de usuarios en dashboard de administrador.</li>
-            <li>CRUD de roles y permisos.</li>
-            <li>CRUD de países, estados y ciudades.</li>
+            <li>
+                Todo lo incluido en el proyecto de <a href="https://github.com/susananzth/Laravel_Login_Panel_Roles"
+                class="underline text-sm text-txtdark-600 dark:text-txtdark-400 hover:text-txtdark-900
+                dark:hover:text-txtdark-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2
+                focus:ring-pink-500 dark:focus:ring-offset-secondary-800 pl-1">Laravel Login</a>.
+            </li>
+            <li>CRUD de Tags.</li>
+            <li>CRUD de Categorías.</li>
+            <li>CRUD de Blogs.</li>
+            <li>Vista pública de Blogs.</li>
+            <li>Editor de texto moderno para crear y editar Blogs.</li>
         </ul>
         <h6 class="mb-4 border-b text-2xl leading-tight">
             Construido con 🛠️

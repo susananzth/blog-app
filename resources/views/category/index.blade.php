@@ -1,5 +1,5 @@
 <x-slot name="header">
-    <x-title-list icon="id-card">{{ __('Document Types') }}</x-title-list>
+    <x-title-list icon="layer-group">{{ __('Categories') }}</x-title-list>
 </x-slot>
 
 <div class="max-w-7xl py-6 mx-auto sm:px-4 lg:px-6 space-y-6">
@@ -8,7 +8,7 @@
         <div class="flex flex-col">
             <div class="inline-block min-w-full">
                 <x-primary-button type="button" wire:click="create()" class="mb-2">
-                    <i class="fa-solid fa-plus me-1"></i>{{ __('Create Document Type') }}
+                    <i class="fa-solid fa-plus me-1"></i>{{ __('Create Category') }}
                 </x-primary-button>
                 <div class="rounded overflow-x-auto">
                     <table class="min-w-full text-left text-sm font-light">
@@ -22,21 +22,21 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($document_types as $document_type)
+                            @forelse ($categories as $category)
                             <tr
                                 class="border-b transition duration-300 ease-in-out hover:bg-secondary-100 dark:border-secondary-500 dark:hover:bg-secondary-600">
-                                <x-table-td>{{ $document_type->name }}</x-table-td>
-                                <x-table-td>{{ Carbon\Carbon::parse($document_type->created_at)->format('d/m/Y h:m:s') }}</x-table-td>
-                                <x-table-td>{{ Carbon\Carbon::parse($document_type->updated_at)->format('d/m/Y h:m:s') }}</x-table-td>
+                                <x-table-td>{{ $category->name }}</x-table-td>
+                                <x-table-td>{{ Carbon\Carbon::parse($category->created_at)->format('d/m/Y h:m:s') }}</x-table-td>
+                                <x-table-td>{{ Carbon\Carbon::parse($category->updated_at)->format('d/m/Y h:m:s') }}</x-table-td>
                                 <x-table-td>
-                                    @if ($document_type->status == true)
+                                    @if ($category->status == true)
                                     <x-bag color="bg-emerald-400">{{ __('Active') }}</x-bag>
                                     @else
                                     <x-bag color="bg-red-400">{{ __('Inactive') }}</x-bag>
                                     @endif
                                 </x-table-td>
                                 <x-table-td>
-                                    <x-table-buttons id="{{ $document_type->id }}" />
+                                    <x-table-buttons id="{{ $category->id }}" />
                                 </x-table-td>
                             </tr>
                             @empty
@@ -46,18 +46,18 @@
                     </table>
                 </div>
                 <div class="mt-2">
-                    {{ $document_types->links() }}
+                    {{ $categories->links() }}
                 </div>
             </div>
         </div>
-        @if($addDocumentType)
-            @include('document_type.create')
+        @if($addCategory)
+            @include('category.create')
         @endif
-        @if($updateDocumentType)
-            @include('document_type.edit')
+        @if($updateCategory)
+            @include('category.edit')
         @endif
-        @if($deleteDocumentType)
-            <x-table-modal-delete model="deleteDocumentType" />
+        @if($deleteCategory)
+            <x-table-modal-delete model="deleteCategory" />
         @endif
     </div>
 </div>

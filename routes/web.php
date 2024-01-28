@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Livewire\Categories;
 use App\Http\Livewire\Cities;
 use App\Http\Livewire\Countries;
 use App\Http\Livewire\Currencies;
@@ -36,6 +37,7 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', Dashboard::class    )->name('dashboard');
+    Route::get('/category',  Categories::class   )->name('categories');
     Route::get('/city',      Cities::class       )->name('cities');
     Route::get('/country',   Countries::class    )->name('countries');
     Route::get('/currency',  Currencies::class   )->name('currencies');

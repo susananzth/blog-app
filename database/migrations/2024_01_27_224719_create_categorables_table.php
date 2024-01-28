@@ -8,25 +8,20 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up(): void
     {
         Schema::create('categorables', function (Blueprint $table) {
             $table->bigInteger('category_id');
             $table->morphs('categorable');
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrent();
-            $table->softDeletes();
+            $table->timestamps();
+
             $table->unique(['category_id', 'categorable_type', 'categorable_id']);
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down(): void
     {
