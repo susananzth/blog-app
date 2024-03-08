@@ -126,7 +126,6 @@ class Categories extends Component
         $this->resetValidationAndFields();
         $this->category_id    = $category->id;
         $this->name           = $category->name;
-        $this->image          = $category->image->url ?? null;
         $this->imageEdit      = $category->image->url ?? null;
         $this->status         = $category->status;
         $this->updateCategory = true;

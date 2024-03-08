@@ -8,7 +8,14 @@ abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
 
-    protected static $migration_run = false;
+    /**
+     * Indicates whether the default seeder should run before each test.
+     *
+     * @var bool
+     */
+    protected $seed = true;
+    
+    /* protected static $migration_run = false;
 
     public function setUp(): void{
         parent::setUp();
@@ -19,5 +26,5 @@ abstract class TestCase extends BaseTestCase
             $this->artisan('passport:install', ['--no-interaction' => true, '--force' => true,]);
             static::$migration_run = true;
         }
-    }
+    } */
 }
