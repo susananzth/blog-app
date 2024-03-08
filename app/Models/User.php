@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\hasMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -84,6 +85,14 @@ class User extends Authenticatable
     public function phone_code(): BelongsTo
     {
         return $this->belongsTo(Country::class, 'phone_code_id');
+    }
+
+    /**
+     * Get the posts for the user.
+     */
+    public function posts(): hasMany
+    {
+        return $this->hasMany(Post::class);
     }
 
     /**

@@ -2,21 +2,21 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Category;
+use App\Models\Post;
+use App\Models\Tag;
 use Illuminate\Database\Seeder;
 
 class PostSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
-        \App\Models\Post::factory()->count(10)->create()->each(function ($post) {
-            $post->categories()->save(\App\Models\Category::inRandomOrder()->first());
-            $post->tags()->save(\App\Models\Tag::inRandomOrder()->first());
+        Post::factory()->count(10)->create()->each(function ($post) {
+            $post->categories()->save(Category::inRandomOrder()->first());
+            $post->tags()->save(Tag::inRandomOrder()->first());
             $post->save();
         });
     }

@@ -210,7 +210,7 @@ class Categories extends Component
                 ->with('message', 'Category not found')
                 ->with('alert_class', 'danger');
         }
-        if (Storage::exists('public/images/'.$category->image->url)) {
+        if (isset($category->image) && Storage::exists('public/images/'.$category->image->url)) {
             Storage::delete('public/images/'.$category->image->url);
         }
 
