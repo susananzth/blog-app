@@ -149,21 +149,21 @@ class Categories extends Component
                 ->with('alert_class', 'danger');
         }
 
-        if (gettype($this->image) != 'string' && $this->image != '') {
-            $file = $this->image->storePublicly('public/images');
-            $this->image = substr($file, strlen('public/images/'));
-            if (Storage::exists('public/images/'.$category->image->url)) {
-                Storage::delete('public/images/'.$category->image->url);
-            }
-        } else {
-            $this->image = $category->image->url;
-        }
-
         DB::beginTransaction();
-        $category->name       = $this->name;
-        $category->status     = $this->status;
-        $category->image->url = $this->image;
-        $category->image->save();
+        $category->name   = $this->name;
+        $category->status = $this->status;
+        if ($this->image != '') {
+            if ($category->image) {
+                if (Storage::exists('public/images/'.$category->image->url)) {
+                    Storage::delete('public/images/'.$category->image->url);
+                }
+                $category->image->delete();
+            }
+            $file = $this->image->storePublicly('public/images');
+            $category->image()->create([
+                'url' => substr($file, strlen('public/images/')),
+            ]);
+        }
         $category->save();
         DB::commit();
 

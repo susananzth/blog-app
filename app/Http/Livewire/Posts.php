@@ -163,23 +163,24 @@ class Posts extends Component
                 ->with('alert_class', 'danger');
         }
 
-        if (gettype($this->image) != 'string' && $this->image != '') {
-            $file = $this->image->storePublicly('public/images');
-            $this->image = substr($file, strlen('public/images/'));
-            if (isset($post->image) && Storage::exists('public/images/'.$post->image->url)) {
-                Storage::delete('public/images/'.$post->image->url);
-            }
-        } else {
-            $this->image = $post->image->url;
-        }
-
         DB::beginTransaction();
         $post->title      = $this->title;
         $post->slug       = $this->slug;
         $post->body       = $this->body;
         $post->status       = $this->status;
         $post->image->url = $this->image;
-        $post->image->save();
+        if ($this->image != '') {
+            if ($post->image) {
+                if (Storage::exists('public/images/'.$post->image->url)) {
+                    Storage::delete('public/images/'.$post->image->url);
+                }
+                $post->image->delete();
+            }
+            $file = $this->image->storePublicly('public/images');
+            $post->image()->create([
+                'url' => substr($file, strlen('public/images/')),
+            ]);
+        }
         $post->save();
         DB::commit();
 
