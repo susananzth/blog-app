@@ -182,6 +182,9 @@ return [
         'document_number'       => 'Número de documento',
         'document_type_id'      => 'Tipo de Documento',
         'title'                 => 'Título',
+        'image'                 => 'Imagen',
+        'status'                => 'Estado',
+        'body'                  => 'Contenido',
     ],
 
 ];

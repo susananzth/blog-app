@@ -17,21 +17,23 @@ class PostRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
      */
-    public function rules($postId = null): array
+    public static function rules($postId = null): array
     {
         $baseRules = [
             'title'   => ['required', 'string', 'max:200'],
             'image'   => ['nullable', 'file', 'mimes:jpg,jpeg,png', 'max:3000'],
             'body'    => ['required', 'string'],
-            'status'  => ['required', 'boolean'],
+            'status'  => ['nullable'],
         ];
 
         if ($postId) {
             $baseRules['title'][]  = 'unique:posts,title,' . $postId;
+            $baseRules['status'][] = ['required', 'boolean'];
         } else {
             $baseRules['title'][] = 'unique:posts,title';
+            $baseRules['status'][] = ['required', 'boolean'];
         }
 
         return $baseRules;

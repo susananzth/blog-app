@@ -6,15 +6,18 @@ use DB;
 use App\Http\Requests\PostRequest;
 use App\Models\Post;
 use App\Models\User;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 
 class Posts extends Component
 {
-    use WithPagination;
+    use WithFileUploads, WithPagination;
 
     public $users, $title, $slug, $image, $imageEdit, $body, $status, $user_name, $post_id;
     public $addPost = false, $updatePost = false, $deletePost = false;
@@ -85,14 +88,14 @@ class Posts extends Component
         }
         $this->validate();
 
-        $user_id = Auth::id();
+        $user = Auth::user();
 
         DB::beginTransaction();
         $post = Post::create([
             'title'   => $this->title,
             'slug'    => Str::slug($this->title, '-'),
             'body'    => $this->body,
-            'user_id' => $user_id,
+            'user_id' => $user->id,
             'status'  => $this->status,
         ]);
         $post->save();
@@ -165,10 +168,9 @@ class Posts extends Component
 
         DB::beginTransaction();
         $post->title      = $this->title;
-        $post->slug       = $this->slug;
+        $post->slug       = Str::slug($this->title, '-');
         $post->body       = $this->body;
-        $post->status       = $this->status;
-        $post->image->url = $this->image;
+        $post->status     = $this->status;
         if ($this->image != '') {
             if ($post->image) {
                 if (Storage::exists('public/images/'.$post->image->url)) {

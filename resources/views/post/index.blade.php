@@ -1,5 +1,5 @@
 <x-slot name="header">
-    <x-title-list icon="map-location-dot">{{ __('Posts') }}</x-title-list>
+    <x-title-list icon="blog">{{ __('Posts') }}</x-title-list>
 </x-slot>
 
 <div class="max-w-7xl py-6 mx-auto sm:px-4 lg:px-6 space-y-6">
@@ -26,7 +26,12 @@
                                 class="border-b transition duration-300 ease-in-out hover:bg-secondary-100 dark:border-secondary-500 dark:hover:bg-secondary-600">
                                 <x-table-td>{{ $post->title }}</x-table-td>
                                 <x-table-td>{{ $post->user->first_name }} {{ $post->user->last_name }}</x-table-td>
-                                <x-table-td>{{ $post->status }}</x-table-td>
+                                <x-table-td>
+                                    @if ($post->status == true)
+                                    <x-bag color="bg-green-400">{{ __('Published') }}</x-bag>
+                                    @else
+                                    <x-bag color="bg-gray-400">{{ __('Created') }}</x-bag>
+                                    @endif</x-table-td>
                                 <x-table-td>
                                     <x-table-buttons id="{{ $post->id }}" />
                                 </x-table-td>
